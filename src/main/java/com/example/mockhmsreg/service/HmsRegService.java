@@ -8,24 +8,24 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.example.mockhmsreg.repository.RegDao;
-import com.example.mockhmsreg.rest.ByggeKortDto;
+import com.example.mockhmsreg.rest.HmsRegDto;
 
 @Service
-public class ByggeKortService {
+public class HmsRegService {
     private final RegDao byggeKortDao;
 
     @Autowired
-    public ByggeKortService(@Qualifier("fakeDao") RegDao byggeKortDao) {this.byggeKortDao = byggeKortDao;}
+    public HmsRegService(@Qualifier("fakeDao") RegDao byggeKortDao) {this.byggeKortDao = byggeKortDao;}
 
-    public UUID addByggeKort(ByggeKortDto byggekort) {
+    public UUID addByggeKort(HmsRegDto byggekort) {
         return byggeKortDao.insertByggeKort(byggekort);
     }
 
-    public List<ByggeKortDto> getAll() {
+    public List<HmsRegDto> getAll() {
         return byggeKortDao.selectAll();
     }
 
-    public  ByggeKortDto getByggeKort(UUID id) {
+    public  HmsRegDto getByggeKort(UUID id) {
         return byggeKortDao.selectByggekort(id);
     }
 
@@ -33,7 +33,7 @@ public class ByggeKortService {
         byggeKortDao.deleteByggeKort(id);
     }
 
-    public void updateByggeKort(UUID id, ByggeKortDto byggekort) {
+    public void updateByggeKort(UUID id, HmsRegDto byggekort) {
         byggeKortDao.updateByggeKort(id, byggekort);
     }
 }

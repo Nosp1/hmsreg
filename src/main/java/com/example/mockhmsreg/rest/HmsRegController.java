@@ -23,21 +23,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.mockhmsreg.service.ByggeKortService;
+import com.example.mockhmsreg.service.HmsRegService;
 
 @RequestMapping("api/v1/byggekort")
 @RestController
 public class HmsRegController {
     private static final Logger logger = LoggerFactory.getLogger(HmsRegController.class);
-    private final ByggeKortService byggeKortService;
+    private final HmsRegService byggeKortService;
 
     @Autowired
-    public HmsRegController(ByggeKortService byggeKortService) {
+    public HmsRegController(HmsRegService byggeKortService) {
         this.byggeKortService = byggeKortService;
     }
 
     @PostMapping("/lagre")
-    public ResponseEntity<UUID> addByggeKort(@NotNull @Valid @RequestBody ByggeKortDto byggeKort)
+    public ResponseEntity<UUID> addByggeKort(@NotNull @Valid @RequestBody HmsRegDto byggeKort)
         throws InterruptedException, IOException {
         UUID response = byggeKortService.addByggeKort(byggeKort);
         return new ResponseEntity<UUID>(response, OK);
@@ -45,14 +45,14 @@ public class HmsRegController {
     }
 
     @GetMapping
-    public List<ByggeKortDto> getAllByggeKort() {
+    public List<HmsRegDto> getAllByggeKort() {
         return byggeKortService.getAll();
     }
 
     @GetMapping(value = "/hent/byggekort/{id}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<ByggeKortDto> getByggeKort(@NotNull @PathVariable("id") UUID id) {
-        ByggeKortDto response = byggeKortService.getByggeKort(id);
-        return new ResponseEntity<ByggeKortDto>(response, OK);
+    public ResponseEntity<HmsRegDto> getByggeKort(@NotNull @PathVariable("id") UUID id) {
+        HmsRegDto response = byggeKortService.getByggeKort(id);
+        return new ResponseEntity<HmsRegDto>(response, OK);
     }
 
     @DeleteMapping(path = "{id}")
@@ -62,7 +62,7 @@ public class HmsRegController {
 
     @PutMapping
     public void updateByggeKort(@NotNull @PathVariable("id") UUID id,
-        @NotNull @Valid @RequestBody ByggeKortDto byggeKortToUpdate) {
+        @NotNull @Valid @RequestBody HmsRegDto byggeKortToUpdate) {
         byggeKortService.updateByggeKort(id, byggeKortToUpdate);
     }
 

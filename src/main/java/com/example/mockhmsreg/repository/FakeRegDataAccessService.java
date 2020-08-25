@@ -7,43 +7,43 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.mockhmsreg.rest.ByggeKortDto;
+import com.example.mockhmsreg.rest.HmsRegDto;
 
 @Repository("fakeDao")
 public class FakeRegDataAccessService implements RegDao {
-    private static List<ByggeKortDto> DB = new ArrayList<>();
+    private static List<HmsRegDto> DB = new ArrayList<>();
 
     @Override
-    public UUID insertByggeKort(UUID id, ByggeKortDto byggekort) {
-        DB.add(new ByggeKortDto(id, byggekort.getByggeKortNummer()));
+    public UUID insertByggeKort(UUID id, HmsRegDto byggekort) {
+        DB.add(new HmsRegDto(id, byggekort.getByggeKortNummer()));
         return id;
     }
 
     @Override
-    public Optional<ByggeKortDto> selectByggekortByStream(UUID id) {
+    public Optional<HmsRegDto> selectByggekortByStream(UUID id) {
         return DB.stream().filter(byggekort -> byggekort.getId().equals(id)).findFirst();
     }
 
     @Override
-    public List<ByggeKortDto> selectAll() {
+    public List<HmsRegDto> selectAll() {
         return DB;
     }
 
     @Override
-    public ByggeKortDto selectByggekort(UUID id) {
-        for (ByggeKortDto d : DB) {
+    public HmsRegDto selectByggekort(UUID id){
+        for (HmsRegDto d : DB) {
             if (d.getId().equals(id)) {
                 return d;
             }
 
         }
 
-        return new ByggeKortDto(id, "ingenbyggekort");
+        return new HmsRegDto(null, null);
     }
 
     @Override
     public int deleteByggeKort(UUID id) {
-        Optional<ByggeKortDto> byggekort = selectByggekortByStream(id);
+        Optional<HmsRegDto> byggekort = selectByggekortByStream(id);
         if (byggekort.isEmpty()) {
 
             return 0;
@@ -53,11 +53,11 @@ public class FakeRegDataAccessService implements RegDao {
     }
 
     @Override
-    public int updateByggeKort(UUID id, ByggeKortDto byggekort) {
+    public int updateByggeKort(UUID id, HmsRegDto byggekort) {
         return selectByggekortByStream(id).map(b -> {
             int indexOfByggeKort = DB.indexOf(b);
             if (indexOfByggeKort >= 0) {
-                DB.set(indexOfByggeKort, new ByggeKortDto(id, byggekort.getByggeKortNummer()));
+                DB.set(indexOfByggeKort, new HmsRegDto(id, byggekort.getByggeKortNummer()));
                 return 1;
             }
             return 0;
