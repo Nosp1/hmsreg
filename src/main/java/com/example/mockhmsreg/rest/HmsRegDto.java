@@ -2,11 +2,11 @@ package com.example.mockhmsreg.rest;
 
 import java.util.UUID;
 
-public class ByggeKortDto {
+public class HmsRegDto {
     private String byggeKortNummer;
     private UUID id;
 
-    public ByggeKortDto(UUID id, String byggeKortNummer) {
+    public HmsRegDto(UUID id, String byggeKortNummer) {
         this.byggeKortNummer = byggeKortNummer;
         this.id = id;
     }
