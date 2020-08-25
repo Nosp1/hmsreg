@@ -37,7 +37,7 @@ public class FakeRegDataAccessService implements RegDao {
             }
 
         }
-
+        // TODO: 25/08/2020 returne http.status.error??? 
         return new HmsRegDto(null, null);
     }
 
