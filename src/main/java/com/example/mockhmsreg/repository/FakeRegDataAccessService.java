@@ -14,9 +14,14 @@ public class FakeRegDataAccessService implements RegDao {
     private static List<ByggeKortDto> DB = new ArrayList<>();
 
     @Override
-    public int insertByggeKort(UUID id, ByggeKortDto byggekort) {
+    public UUID insertByggeKort(UUID id, ByggeKortDto byggekort) {
         DB.add(new ByggeKortDto(id, byggekort.getByggeKortNummer()));
-        return 1;
+        return id;
+    }
+
+    @Override
+    public Optional<ByggeKortDto> selectByggekortByStream(UUID id) {
+        return DB.stream().filter(byggekort -> byggekort.getId().equals(id)).findFirst();
     }
 
     @Override
@@ -25,13 +30,20 @@ public class FakeRegDataAccessService implements RegDao {
     }
 
     @Override
-    public Optional<ByggeKortDto> selectByggekort(UUID id) {
-        return DB.stream().filter(byggekort -> byggekort.getByggeKortNummer().equals(id)).findFirst();
+    public ByggeKortDto selectByggekort(UUID id) {
+        for (ByggeKortDto d : DB) {
+            if (d.getId().equals(id)) {
+                return d;
+            }
+
+        }
+
+        return new ByggeKortDto(id, "ingenbyggekort");
     }
 
     @Override
     public int deleteByggeKort(UUID id) {
-        Optional<ByggeKortDto> byggekort =  selectByggekort(id);
+        Optional<ByggeKortDto> byggekort = selectByggekortByStream(id);
         if (byggekort.isEmpty()) {
 
             return 0;
@@ -42,17 +54,14 @@ public class FakeRegDataAccessService implements RegDao {
 
     @Override
     public int updateByggeKort(UUID id, ByggeKortDto byggekort) {
-        return selectByggekort(id).map(b -> {
+        return selectByggekortByStream(id).map(b -> {
             int indexOfByggeKort = DB.indexOf(b);
             if (indexOfByggeKort >= 0) {
-                DB.set(indexOfByggeKort, new ByggeKortDto(id,byggekort.getByggeKortNummer()));
+                DB.set(indexOfByggeKort, new ByggeKortDto(id, byggekort.getByggeKortNummer()));
                 return 1;
             }
             return 0;
         }).orElse(0);
     }
-
-
-
 
 }
