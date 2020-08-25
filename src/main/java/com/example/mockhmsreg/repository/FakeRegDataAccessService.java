@@ -31,14 +31,15 @@ public class FakeRegDataAccessService implements RegDao {
 
     @Override
     public HmsRegDto selectByggekort(UUID id){
+        HmsRegDto response = null;
         for (HmsRegDto d : DB) {
             if (d.getId().equals(id)) {
-                return d;
+                response = d;
             }
 
         }
         // TODO: 25/08/2020 returne http.status.error??? 
-        return new HmsRegDto(null, null);
+        return response;
     }
 
     @Override

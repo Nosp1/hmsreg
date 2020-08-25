@@ -1,5 +1,6 @@
 package com.example.mockhmsreg.rest;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -51,8 +52,11 @@ public class HmsRegController {
 
     @GetMapping(value = "/hent/byggekort/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<HmsRegDto> getByggeKort(@NotNull @PathVariable("id") UUID id) {
-        HmsRegDto response = byggeKortService.getByggeKort(id);
-        return new ResponseEntity<HmsRegDto>(response, OK);
+        HmsRegDto response;
+        response = byggeKortService.getByggeKort(id);
+        return (response != null)
+            ? new ResponseEntity<HmsRegDto>(response,OK)
+            : new ResponseEntity<HmsRegDto>( (HmsRegDto) null,NOT_FOUND);
     }
 
     @DeleteMapping(path = "{id}")
