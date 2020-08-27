@@ -17,6 +17,7 @@ public class FakeRegDataAccessService implements RegDao {
     public UUID insertByggeKort(UUID id, HmsRegDto byggekort) {
         DB.add(new HmsRegDto(id, byggekort.getByggeKortNummer()));
         return id;
+
     }
 
     @Override
@@ -63,6 +64,7 @@ public class FakeRegDataAccessService implements RegDao {
             return 0;
         }).orElse(0);
     }
+
 
     public static List<HmsRegDto> getDB() {
         return DB;
