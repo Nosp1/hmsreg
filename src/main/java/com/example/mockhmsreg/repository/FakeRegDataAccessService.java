@@ -64,4 +64,7 @@ public class FakeRegDataAccessService implements RegDao {
         }).orElse(0);
     }
 
+    public static List<HmsRegDto> getDB() {
+        return DB;
+    }
 }
