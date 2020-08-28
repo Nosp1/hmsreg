@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.Assert;
-import java.util.UUID;
-
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,8 +78,10 @@ public class FakeRegDataAccessServiceTest {
         fakeRegDataAccessService.insertByggeKort(id, byggeKortToDelete);
         //act
         Integer response = fakeRegDataAccessService.deleteByggeKort(id);
+        List<HmsRegDto> dbList = FakeRegDataAccessService.getDB();
         //assert
         assertThat(response.equals(1));
+        assertThat(dbList.size()).isEqualTo(6);
         Assert.assertNull(fakeRegDataAccessService.selectByggekort(id));
     }
 }
