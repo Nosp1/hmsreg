@@ -2,8 +2,10 @@ package com.example.mockhmsreg.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.UUID;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,5 +39,49 @@ public class FakeRegDataAccessServiceTest {
         assertThat(byggeKort.getId()).isEqualTo(id);
     }
 
+    @Test
+    public void skalLagreByggeKort() {
+        //arrange
+        UUID id = UUID.randomUUID();
+        HmsRegDto byggekort = new HmsRegDto(id, "6789");
+        //act
+        UUID response = fakeRegDataAccessService.insertByggeKort(id, byggekort);
+        List<HmsRegDto> dbList = FakeRegDataAccessService.getDB();
+        //assert
+        assertThat(fakeRegDataAccessService.selectAll().size()).isEqualTo(4);
+        assertThat(dbList.size()).isEqualTo(4);
+        assertThat(response.equals(id));
+        Assert.assertNotNull(byggekort);
+    }
 
+    @Test
+    public void skalOppdatereByggeKort() {
+        //arrange
+        UUID id = UUID.randomUUID();
+        HmsRegDto byggeKortToUpdate = new HmsRegDto(id, "9999");
+        HmsRegDto newByggeKort = new HmsRegDto(id, "8888");
+        //act
+        UUID response = fakeRegDataAccessService.insertByggeKort(id, byggeKortToUpdate);
+        Integer numberToReturn = fakeRegDataAccessService.updateByggeKort(id, newByggeKort);
+        //asserts
+        assertThat(response.equals(id));
+        Assert.assertNotNull(numberToReturn);
+        assertThat(fakeRegDataAccessService.selectByggekort(id).getByggeKortNummer()
+            .equals(newByggeKort.getByggeKortNummer()));
+    }
+
+    @Test
+    public void skalSletteByggeKort() {
+        //arrange
+        UUID id = UUID.randomUUID();
+        HmsRegDto byggeKortToDelete = new HmsRegDto(id, "7777");
+        fakeRegDataAccessService.insertByggeKort(id, byggeKortToDelete);
+        //act
+        Integer response = fakeRegDataAccessService.deleteByggeKort(id);
+        List<HmsRegDto> dbList = FakeRegDataAccessService.getDB();
+        //assert
+        assertThat(response.equals(1));
+        assertThat(dbList.size()).isEqualTo(6);
+        Assert.assertNull(fakeRegDataAccessService.selectByggekort(id));
+    }
 }
